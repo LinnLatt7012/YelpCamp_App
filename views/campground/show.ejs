@@ -19,14 +19,13 @@
                                 <%=campground.name %>
                             </a>
                         </h4> 
-                        <% if (currentUser) { 
-                         if (campground.author.username == currentUser.username) { %>
+                        <% if (currentUser && campground.author.id.equals(currentUser._id) ) {  %>
                          <form  class="form-inline float-right" action="/campgrounds/<%=campground['_id'] %>?_method=DELETE" method="post">
                                 <button class="btn btn-danger" type="submit">Delete</button></form>
                                 <a class="btn btn-warning" href="/campgrounds/<%=campground['_id'] %>/edit">
                             Edit</a>
                             
-                        <% }} %>
+                        <% } %>
                         <p>
                             <%-campground.description %>
                         </p>
@@ -45,11 +44,10 @@
                             <div class="col-md-12">
                                 
                                 <strong><%= comment.author.username%></strong>
-                                <span class="float-right"> <% if (currentUser) { 
-                                if (comment.author.username == currentUser.username) { %>
+                                <span class="float-right"> <% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
                                     <a class="pr-2" href="/campgrounds/<%=campground['_id'] %>/comments/<%=comment.id%>/edit">
                                 Edit</a>
-                                <% }} %>10 days ago </span>
+                                <% } %>10 days ago </span>
                                 <p class="d-block" style="white-space: pre-line"><%-comment.text %></p>
                             </div>
                         </div>

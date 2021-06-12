@@ -45,13 +45,12 @@ router.get("/:c_id/edit", isloggedIn, function (req, res) {
         Comment.findById(req.params.c_id, function (err, cmt) {
             if (err) {
                 console.log(err);
-                redirect("/campgrounds/" + req.params.id);
+                res.redirect("/campgrounds/" + req.params.id);
             } else {
-                if (cmt.author.username == req.user.username) {
-        
+                if (cmt.author.id.equals(req.user._id)) {
                     res.render("comment/edit", {campground: CampGround,comment: cmt });
                 } else {
-                    res.send("malicicous action");
+                    res.redirect("back");
                 }
             }
         })
