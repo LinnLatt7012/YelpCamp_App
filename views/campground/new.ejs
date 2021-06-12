@@ -1,0 +1,22 @@
+<%- include('../partials/header'); -%>
+    <div class="container">
+        
+        <div class="row ">
+            <form action="/campgrounds" class="bg-light px-5 py-2 mx-auto my-4" method="POST" >
+                <h1 class="text-center pt-1">Adding new Campgrounds</h1>
+                <div class="form-group pt-2 ">
+                    <input class="form-control" type="text" name="c_name" placeholder="name">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="image" placeholder="image url">
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" name="description" placeholder="Description" cols="30" rows="10"></textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-lg btn-block">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <%- include('../partials/footer'); -%>

@@ -1,0 +1,27 @@
+<%- include('../partials/header'); -%>
+<div class="mx-5">
+    <h3>
+        <%=campground.name %>
+    </h3>
+    <img class="img-fluid" style="width: 700px;" src="<%=campground.image %>" alt="">
+    <p> <%-campground.description %> </p>
+    <div>
+        <% campground.comments.forEach(commen => { %>
+         <div>
+            <strong class="badge badge-secondary"><%=commen.author.username%> </strong>-
+             <%=commen.text %> 
+         </div>
+        <% }) %>
+        <div>
+            <form class="" action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=PUT" method="post">
+                <div class="form-group mt-2 mr-2">
+                    <textarea class="form-control" name="comment[text]" id="" cols="30" rows="10" placeholder="comment"
+                     ><%= comment.text %></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mt-2 mr-2">Comment</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <%- include('../partials/footer'); -%>

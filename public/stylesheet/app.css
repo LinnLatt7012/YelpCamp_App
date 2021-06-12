@@ -1,0 +1,14 @@
+/* body{
+    background-color: cadetblue;
+    color: coral;
+} */
+.thumbnail img{
+    width: 100%;
+}
+p {
+    white-space: pre-line;
+}
+p a .centered{
+   padding-left: 30%;
+
+}
