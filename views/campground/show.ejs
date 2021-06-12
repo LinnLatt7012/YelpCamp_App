@@ -44,9 +44,13 @@
                             <div class="col-md-12">
                                 
                                 <strong><%= comment.author.username%></strong>
-                                <span class="float-right"> <% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
-                                    <a class="pr-2" href="/campgrounds/<%=campground['_id'] %>/comments/<%=comment.id%>/edit">
-                                Edit</a>
+                                <span class="float-right"> 
+                                <% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
+                                <form  class="form-inline" style="display: inline-block;" action="/campgrounds/<%=campground['_id'] %>/comments/<%=comment.id%>?_method=DELETE" method="post">
+                                    <div class="form-group mt-2 mr-2">
+                                <input type="submit" value="Delete" style="border: none; background-color: white; color: red;"></div>
+                                </form>   
+                                <a class="pr-2" href="/campgrounds/<%=campground['_id'] %>/comments/<%=comment.id%>/edit">Edit</a>
                                 <% } %>10 days ago </span>
                                 <p class="d-block" style="white-space: pre-line"><%-comment.text %></p>
                             </div>
@@ -58,3 +62,5 @@
         </div>
     </div>
     <%- include('../partials/footer'); -%>
+
+    

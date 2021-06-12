@@ -31,6 +31,7 @@ router.post("/",function (req, res) {
                     comment.author.username= req.user.username;
                     comment.save();
                     CampGround.comments.push(comment);
+                    console.log(CampGround.comments);
                     CampGround.save();
                     console.log("a new comment create");
                     res.redirect("/campgrounds/" + CampGround._id);
@@ -40,19 +41,12 @@ router.post("/",function (req, res) {
     });
 });
 
+// edit Features
 router.get("/:c_id/edit", isloggedIn, function (req, res) {
     Campground.findById(req.params.id).populate("comments").exec(function (err, CampGround) {
         Comment.findById(req.params.c_id, function (err, cmt) {
-            if (err) {
-                console.log(err);
-                res.redirect("/campgrounds/" + req.params.id);
-            } else {
-                if (cmt.author.id.equals(req.user._id)) {
-                    res.render("comment/edit", {campground: CampGround,comment: cmt });
-                } else {
-                    res.redirect("back");
-                }
-            }
+            // console.log(CampGround.comments);
+                res.render("comment/edit", {campground: CampGround,comment: cmt });
         })
     })
 })
@@ -67,6 +61,17 @@ router.put("/:c_id", function (req, res) {
         }
     })
 });
+//Delete Feature
+router.delete("/:c_id", checkOwnership, function (req, res) {
+    Campground.findById(req.params.id,function (err, CampGround) {
+        Comment.findByIdAndRemove(req.params.c_id, function(err,d_cmt){
+            CampGround.comments.pull(d_cmt);
+            CampGround.save();
+            res.redirect("/campgrounds/" + req.params.id);
+        });   
+    })
+})
+
 
 
 function isloggedIn(req, res, next) {
@@ -74,5 +79,22 @@ function isloggedIn(req, res, next) {
         return next();
     }
     res.redirect("/login");
+}
+
+function checkOwnership(req, res, next){
+    Campground.findById(req.params.id,function (err, CampGround) {
+        Comment.findById(req.params.c_id, function (err, cmt) {
+            if (err) {
+                console.log(err);
+                res.redirect("/campgrounds/" + req.params.id);
+            } else {
+                if (cmt.author.id.equals(req.user._id)) {
+                    return next();
+                } else {
+                    res.redirect("back");
+                }
+            }
+        })
+    })
 }
 module.exports = router;

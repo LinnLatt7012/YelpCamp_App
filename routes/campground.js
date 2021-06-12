@@ -96,7 +96,7 @@ function checkOwnership(req, res, next) {
                 res.redirect("/campgrounds/" + req.params.id);
             } else {
                 if (foundCampGround.author.id.equals(req.user._id)) {//because ids are not the same data type and for more secure.
-                    next();
+                    return next();
                 } else {
                     res.redirect("/campgrounds/" + req.params.id);
                 }
