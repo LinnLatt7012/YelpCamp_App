@@ -48,7 +48,7 @@
                                 <% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
                                 <form  class="form-inline" style="display: inline-block;" action="/campgrounds/<%=campground['_id'] %>/comments/<%=comment.id%>?_method=DELETE" method="post">
                                     <div class="form-group mt-2 mr-2">
-                                <input type="submit" value="Delete" style="border: none; background-color: white; color: red;"></div>
+                                <input type="submit" value="Delete" style="border: none;color: red; cursor: pointer;" class="bg-light"></div>
                                 </form>   
                                 <a class="pr-2" href="/campgrounds/<%=campground['_id'] %>/comments/<%=comment.id%>/edit">Edit</a>
                                 <% } %>10 days ago </span>

@@ -3,6 +3,7 @@ var back = require('express-back');
 var router = express.Router();
 var Campground = require("../models/Campground");
 var Comment = require("../models/Comment");
+var middlewareObj = require("../middleware");
 
 router.get('/', function (req, res) {
     Campground.find({}, function (err, camp) {
@@ -15,7 +16,7 @@ router.get('/', function (req, res) {
         }
     })
 });
-router.get("/new", isloggedIn, function (req, res) {
+router.get("/new",middlewareObj.isloggedIn, function (req, res) {
     res.render("campground/new");
 });
 router.post('/', function (req, res) {
@@ -51,7 +52,7 @@ router.get("/:id", function (req, res) {
 });
 
 //Edit Features
-router.get("/:id/edit", checkOwnership, function (req, res) {
+router.get("/:id/edit",middlewareObj.checkOwnershipCampGround, function (req, res) {
     Campground.findById(req.params.id, function (err, foundCampGround) {
                 res.render("campground/edit", { campground: foundCampGround });
     })
@@ -70,7 +71,7 @@ router.put("/:id", function (req, res) {
     })
 });
 //Delete Features
-router.delete("/:id", checkOwnership, function (req, res) {
+router.delete("/:id",middlewareObj.checkOwnershipCampGround, function (req, res) {
     Campground.findByIdAndRemove(req.params.id, function (err, foundCampGround) {
         if (err) {
             console.log(err);
@@ -81,31 +82,6 @@ router.delete("/:id", checkOwnership, function (req, res) {
 });
 
 ///helper function
-function isloggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect("/login");
-}
 
-function checkOwnership(req, res, next) {
-    if (req.isAuthenticated()) {
-        Campground.findById(req.params.id, function (err, foundCampGround) {
-            if (err) {
-                console.log(err);
-                res.redirect("/campgrounds/" + req.params.id);
-            } else {
-                if (foundCampGround.author.id.equals(req.user._id)) {//because ids are not the same data type and for more secure.
-                    return next();
-                } else {
-                    res.redirect("/campgrounds/" + req.params.id);
-                }
-            }
-        });
-    } else {
-        res.redirect("/login");
-    }
-
-}
 
 module.exports = router;
