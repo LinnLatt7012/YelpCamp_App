@@ -32,9 +32,9 @@ router.post("/",function (req, res) {
                     comment.author.username= req.user.username;
                     comment.save();
                     CampGround.comments.push(comment);
-                    console.log(CampGround.comments);
+                    //console.log(CampGround.comments);
                     CampGround.save();
-                    console.log("a new comment create");
+                    //console.log("a new comment create");
                     res.redirect("/campgrounds/" + CampGround._id);
                 }
             });

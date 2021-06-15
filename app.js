@@ -8,7 +8,8 @@ var express = require("express"),
     Campground = require("./models/Campground"),
     Comment = require("./models/Comment"),
     User = require("./models/User"),
-    seedDB = require("./seeds");
+    seedDB = require("./seeds"),
+    flash = require("connect-flash");
 
 var commentRoutes       = require("./routes/comment"),
     campgroundRoutes    = require("./routes/campground"),
@@ -20,6 +21,7 @@ mongoose.connect('mongodb://localhost:27017/Yelp_app_v7', { useNewUrlParser: tru
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
+app.use(flash());
 app.set("view engine", "ejs");
 // seedDB();
 
@@ -38,6 +40,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req,res,next){
     res.locals.currentUser= req.user;
+    res.locals.error= req.flash("error");
+    res.locals.success= req.flash("success");
     next();
 });
 
