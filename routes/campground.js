@@ -11,8 +11,8 @@ router.get('/', function (req, res) {
             console.log("OH NO, ERROR!  ");
             console.log(err);
         } else {
-            console.log("All THE CAMPS......");
-            res.render("campground/index", { campgrounds: camp });
+            // console.log("All THE CAMPS......");
+            res.render("campground/index", { campgrounds: camp});
         }
     })
 });
@@ -31,7 +31,8 @@ router.post('/', function (req, res) {
             camp.author.id = req.user._id;
             camp.author.username = req.user.username;
             camp.save();
-            console.log("We save a campp at Yelp_router db");
+            req.flash("success","You successfully created new Campground,called \" "+camp.name+" \"");
+            // console.log("We save a campp at Yelp_router db");
             console.log(camp);
         }
     });
@@ -45,7 +46,7 @@ router.get("/:id", function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            console.log(foundCampGround);
+            //console.log(foundCampGround);
             res.render("campground/show", { campground: foundCampGround });
         }
     })
@@ -76,7 +77,8 @@ router.delete("/:id",middlewareObj.checkOwnershipCampGround, function (req, res)
         if (err) {
             console.log(err);
         } else {
-                res.redirect("/campgrounds");
+            req.flash("success","You deleted Campground, named \" "+ foundCampGround.name+" \" ");
+            res.redirect("/campgrounds");
         }
     })
 });

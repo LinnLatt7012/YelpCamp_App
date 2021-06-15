@@ -1,6 +1,5 @@
 var express = require("express");
 var router = express.Router();
-
 var User = require("../models/User"),
     passport = require("passport");
 
@@ -16,11 +15,13 @@ router.post("/register", function (req, res) {
     var password = req.body.password;
     User.register(new User({ username: username }), password, function (err, user) {
         if (err) {
-            console.log(err);
+            req.flash("error",err.message);
+            //console.log(err);
             return res.render('Auth/register');
         } else {
-            passport.authenticate("local")(req, res, function () {
-                res.redirect("/campgrounds");
+            passport.authenticate("local")(req, res, function () { 
+                req.flash("success","Successfully Signed up!! WELCOME ,"+req.user.username+",");
+                res.redirect("/campgrounds");   
             })
         }
     })
@@ -28,7 +29,7 @@ router.post("/register", function (req, res) {
 
 //Show Login form
 router.get("/login", function (req, res) {
-    res.render("Auth/login");
+    res.render("Auth/login",);
 });
 
 router.post("/login", passport.authenticate("local", {
@@ -40,13 +41,9 @@ router.post("/login", passport.authenticate("local", {
 //Logout 
 router.get("/logout", function (req, res) {
     req.logOut();
+    req.flash("success","Logged you out!!");
     res.redirect('/campgrounds');
 });
 
-function isloggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect("/login");
-}
+
 module.exports = router;
